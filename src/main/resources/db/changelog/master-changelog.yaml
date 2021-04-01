@@ -1,0 +1,173 @@
+databaseChangeLog:
+  # create table assignee
+  - changeSet:
+      id: 1
+      author: trinhan
+      changes:
+        - createTable:
+            tableName: Assignee
+            columns:
+              - column:
+                  name: id
+                  type: nvarchar(30)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: nvarchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_name
+                  type: nvarchar(100)
+                  constraints:
+                    nullable: false
+  # create table progress
+  - changeSet:
+      id: 2
+      author: trinhan
+      changes:
+        - createTable:
+            tableName: Progress
+            columns:
+              - column:
+                  name: status
+                  type: nvarchar(30)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+  # create table task
+  - changeSet:
+      id: 3
+      author: trinhan
+      changes:
+        - createTable:
+            tableName: Task
+            columns:
+              - column:
+                  name: task_name
+                  type: nvarchar(250)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: sub_task_of
+                  type: nvarchar(250)
+              - column:
+                  name: task_description
+                  type: nvarchar(500)
+              - column:
+                  name: task_point
+                  type: int
+                  defaultValue: 5
+              - column:
+                  name: progress
+                  type: nvarchar(30)
+                  defaultValue: TODO
+              - column:
+                  name: assignee_id
+                  type: nvarchar(30)
+              - column:
+                  name: start_date
+                  type: date
+              - column:
+                  name: end_date
+                  type: date
+  # add constraint
+  - changeSet:
+      id: add-constraint
+      author: trinhan
+      changes:
+        - addForeignKeyConstraint:
+            baseColumnNames: assignee_id
+            baseTableName: Task
+            constraintName: fk_assigneeid_id
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: id
+            referencedTableName: Assignee
+            validate: true
+        - addForeignKeyConstraint:
+            baseColumnNames: progress
+            baseTableName: Task
+            constraintName: fk_progress_status
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: status
+            referencedTableName: Progress
+            validate: true
+        - addForeignKeyConstraint:
+            baseColumnNames: sub_task_of
+            baseTableName: Task
+            constraintName: fk_subtask_task
+            onDelete: CASCADE
+            onUpdate: RESTRICT
+            referencedColumnNames: task_name
+            referencedTableName: Task
+            validate: true
+  # insert data
+  - changeSet:
+      id: insert-example
+      author: trinhan
+      changes:
+        - insert:
+            tableName: Assignee
+            columns:
+              - column:
+                  name: id
+                  value: user1
+              - column:
+                  name: first_name
+                  value: nhan
+              - column:
+                  name: last_name
+                  value: phung
+        - insert:
+            tableName: Assignee
+            columns:
+              - column:
+                  name: id
+                  value: user2
+              - column:
+                  name: first_name
+                  value: khoa
+              - column:
+                  name: last_name
+                  value: ly
+        - insert:
+            tableName: Progress
+            columns:
+              - column:
+                  name: status
+                  value: TODO
+        - insert:
+            tableName: Progress
+            columns:
+              - column:
+                  name: status
+                  value: IN_PROGRESS
+        - insert:
+            tableName: Progress
+            columns:
+              - column:
+                  name: status
+                  value: DONE
+        - insert:
+            tableName: Task
+            columns:
+              - column:
+                  name: task_name
+                  value: additem
+              - column:
+                  name: task_description
+                  value: add item to storage
+              - column:
+                  name: task_point
+                  value: 1
+              - column:
+                  name: progress
+                  value: TODO
+              - column:
+                  name: assignee_id
+                  value: user1
