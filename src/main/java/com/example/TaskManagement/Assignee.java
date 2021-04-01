@@ -9,6 +9,19 @@ public class Assignee {
   @NotBlank
   @Size(max = 30)
   private String id;
+
+  @Override
+  public String toString() {
+    return "Assignee{" +
+        "id='" + id + '\'' +
+        ", firstName='" + firstName + '\'' +
+        ", lastName='" + lastName + '\'' +
+        '}';
+  }
+
+  public Assignee() {
+  }
+
   @NotBlank
   @Size(max = 100)
   private String firstName;

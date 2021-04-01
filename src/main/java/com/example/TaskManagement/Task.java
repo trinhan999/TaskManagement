@@ -1,10 +1,8 @@
 package com.example.TaskManagement;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Max;
 import java.util.Date;
 
 enum status {
@@ -15,7 +13,6 @@ enum status {
 
 
 public class Task {
-  @Id
   @Size(max =250)
   private String taskName;
   @Size(max =250)
@@ -25,10 +22,9 @@ public class Task {
   @Min(1)
   @Max(5)
   private Integer taskPoint;
-  @Enumerated(EnumType.STRING)
   private status progress;
-  @ManyToOne
-  private Assignee AssigneeId;
+  @Size(max =30)
+  private String AssigneeId;
   private Date startDate;
   private Date endDate;
 
@@ -49,7 +45,7 @@ public class Task {
   public Task() {
   }
 
-  public Task(String taskName, String description, Integer taskPoint, Assignee assigneeId) {
+  public Task(String taskName, String description, Integer taskPoint, String assigneeId) {
     this.taskName = taskName;
     this.description = description;
     this.taskPoint = taskPoint;
@@ -57,7 +53,7 @@ public class Task {
     AssigneeId = assigneeId;
   }
 
-  public Task(String taskName, String superTaskName, String description, Integer taskPoint, Assignee assigneeId) {
+  public Task(String taskName, String superTaskName, String description, Integer taskPoint, String assigneeId) {
     this.taskName = taskName;
     this.superTaskName = superTaskName;
     this.description = description;
@@ -107,11 +103,11 @@ public class Task {
     this.progress = progress;
   }
 
-  public Assignee getAssigneeId() {
+  public String getAssigneeId() {
     return AssigneeId;
   }
 
-  public void setAssigneeId(Assignee assigneeId) {
+  public void setAssigneeId(String assigneeId) {
     AssigneeId = assigneeId;
   }
 
